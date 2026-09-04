@@ -8,4 +8,9 @@ services:
     class: Drupal\simple_voting\VotingManager
     arguments:
       - '@config.factory'
+      - '@entity_type.manager'
+      - '@database'
+      - '@flood'
+      - '@cache.default'
+      - '@cache_tags.invalidator'
       - '@logger.channel.simple_voting'

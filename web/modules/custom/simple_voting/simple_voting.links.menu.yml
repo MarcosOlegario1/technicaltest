@@ -5,6 +5,13 @@ entity.voting_question.collection:
   parent: system.admin_content
   weight: 10
 
+entity.vote.collection:
+  title: 'Votes'
+  description: 'Inspect and moderate individual votes.'
+  route_name: entity.vote.collection
+  parent: system.admin_content
+  weight: 11
+
 simple_voting.settings:
   title: 'Simple voting'
   description: 'Turn voting on or off across the CMS and the API.'

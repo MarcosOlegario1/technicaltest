@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\simple_voting\Entity\VotingOptionInterface;
 use Drupal\simple_voting\Entity\VotingQuestionInterface;
 
 /**
@@ -23,16 +24,35 @@ function simple_voting_help(string $route_name, RouteMatchInterface $route_match
 /**
  * Implements hook_ENTITY_TYPE_predelete() for voting_question.
  *
- * Removes the answer options that belong to a question being deleted so no
+ * Removes the options and votes that belong to a question being deleted so no
  * orphan rows are left behind.
  */
 function simple_voting_voting_question_predelete(VotingQuestionInterface $question): void {
-  $storage = \Drupal::entityTypeManager()->getStorage('voting_option');
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  foreach (['vote', 'voting_option'] as $entity_type_id) {
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+    $ids = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('question', $question->id())
+      ->execute();
+    if ($ids) {
+      $storage->delete($storage->loadMultiple($ids));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for voting_option.
+ *
+ * Removes the votes cast for an option being deleted.
+ */
+function simple_voting_voting_option_predelete(VotingOptionInterface $option): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('vote');
   $ids = $storage->getQuery()
     ->accessCheck(FALSE)
-    ->condition('question', $question->id())
+    ->condition('answer_option', $option->id())
     ->execute();
-
   if ($ids) {
     $storage->delete($storage->loadMultiple($ids));
   }
