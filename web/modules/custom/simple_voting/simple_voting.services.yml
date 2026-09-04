@@ -1,0 +1,5 @@
+services:
+  logger.channel.simple_voting:
+    parent: logger.channel_base
+    arguments:
+      - simple_voting

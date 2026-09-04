@@ -1,0 +1,16 @@
+administer simple voting:
+  title: 'Administer the simple voting system'
+  description: 'Manage voting questions, answer options and the global voting settings.'
+  restrict access: true
+
+vote in simple voting:
+  title: 'Vote in the simple voting system'
+  description: 'Cast a vote on the questions available in the CMS.'
+
+access simple voting results:
+  title: 'View simple voting results'
+  description: 'See the aggregated results of a question regardless of its individual visibility setting.'
+
+access simple voting api:
+  title: 'Use the simple voting external API'
+  description: 'Read questions and register votes through the external REST API.'

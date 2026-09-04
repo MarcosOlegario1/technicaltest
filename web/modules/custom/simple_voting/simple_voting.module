@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Simple voting system.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function simple_voting_help(string $route_name, RouteMatchInterface $route_match): ?string {
+  if ($route_name === 'help.page.simple_voting') {
+    return '<p>' . t('Lets an administrator define questions with answer options and lets people vote on them, either in the CMS or through the external API.') . '</p>';
+  }
+  return NULL;
+}

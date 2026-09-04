@@ -1,0 +1,6 @@
+entity.voting_question.collection:
+  title: 'Voting questions'
+  description: 'Create and manage the questions people can vote on.'
+  route_name: entity.voting_question.collection
+  parent: system.admin_content
+  weight: 10

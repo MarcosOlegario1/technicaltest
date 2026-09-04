@@ -1,0 +1,5 @@
+entity.voting_question.add_form:
+  route_name: entity.voting_question.add_form
+  title: 'Add voting question'
+  appears_on:
+    - entity.voting_question.collection
