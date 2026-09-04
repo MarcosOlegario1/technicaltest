@@ -31,3 +31,5 @@ $RECYCLE.BIN/
 /auth.json
 /.editorconfig
 /.gitattributes
+# Local project brief, not part of the deliverable.
+/Teste de Sistema de Votação Simples*.pdf
