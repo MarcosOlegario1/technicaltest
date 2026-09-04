@@ -1,0 +1,48 @@
+simple_voting_api.questions:
+  path: '/api/voting/questions'
+  methods: [GET]
+  defaults:
+    _controller: '\Drupal\simple_voting_api\Controller\VotingApiController::listQuestions'
+  requirements:
+    _permission: 'access simple voting api'
+    _simple_voting_voting_open: 'TRUE'
+    _format: 'json'
+  options:
+    _auth: ['basic_auth', 'cookie']
+
+simple_voting_api.question:
+  path: '/api/voting/questions/{identifier}'
+  methods: [GET]
+  defaults:
+    _controller: '\Drupal\simple_voting_api\Controller\VotingApiController::getQuestion'
+  requirements:
+    _permission: 'access simple voting api'
+    _simple_voting_voting_open: 'TRUE'
+    _format: 'json'
+  options:
+    _auth: ['basic_auth', 'cookie']
+
+simple_voting_api.vote:
+  path: '/api/voting/questions/{identifier}/vote'
+  methods: [POST]
+  defaults:
+    _controller: '\Drupal\simple_voting_api\Controller\VotingApiController::vote'
+  requirements:
+    _permission: 'access simple voting api'
+    _simple_voting_voting_open: 'TRUE'
+    _format: 'json'
+    _csrf_request_header_token: 'TRUE'
+  options:
+    _auth: ['basic_auth', 'cookie']
+
+simple_voting_api.results:
+  path: '/api/voting/questions/{identifier}/results'
+  methods: [GET]
+  defaults:
+    _controller: '\Drupal\simple_voting_api\Controller\VotingApiController::results'
+  requirements:
+    _permission: 'access simple voting api'
+    _simple_voting_voting_open: 'TRUE'
+    _format: 'json'
+  options:
+    _auth: ['basic_auth', 'cookie']
