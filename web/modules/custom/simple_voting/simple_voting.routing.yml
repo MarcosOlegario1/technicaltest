@@ -1,3 +1,11 @@
+simple_voting.settings:
+  path: '/admin/config/content/simple-voting'
+  defaults:
+    _form: '\Drupal\simple_voting\Form\SettingsForm'
+    _title: 'Simple voting'
+  requirements:
+    _permission: 'administer simple voting'
+
 simple_voting.question.options:
   path: '/admin/content/voting-question/{voting_question}/options'
   defaults:

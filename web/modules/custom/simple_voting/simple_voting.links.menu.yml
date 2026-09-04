@@ -4,3 +4,9 @@ entity.voting_question.collection:
   route_name: entity.voting_question.collection
   parent: system.admin_content
   weight: 10
+
+simple_voting.settings:
+  title: 'Simple voting'
+  description: 'Turn voting on or off across the CMS and the API.'
+  route_name: simple_voting.settings
+  parent: system.admin_config_content
