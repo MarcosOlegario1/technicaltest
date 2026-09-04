@@ -22,6 +22,21 @@ function simple_voting_help(string $route_name, RouteMatchInterface $route_match
 }
 
 /**
+ * Implements hook_theme().
+ */
+function simple_voting_theme(): array {
+  return [
+    'simple_voting_results' => [
+      'variables' => [
+        'question' => NULL,
+        'results' => [],
+        'user_choice' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
  * Implements hook_ENTITY_TYPE_predelete() for voting_question.
  *
  * Removes the options and votes that belong to a question being deleted so no

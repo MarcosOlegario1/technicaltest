@@ -17,3 +17,10 @@ simple_voting.settings:
   description: 'Turn voting on or off across the CMS and the API.'
   route_name: simple_voting.settings
   parent: system.admin_config_content
+
+simple_voting.overview:
+  title: 'Vote'
+  description: 'Browse the questions open for voting.'
+  route_name: simple_voting.overview
+  menu_name: main
+  weight: 50

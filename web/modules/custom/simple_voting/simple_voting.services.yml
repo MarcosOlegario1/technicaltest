@@ -14,3 +14,10 @@ services:
       - '@cache.default'
       - '@cache_tags.invalidator'
       - '@logger.channel.simple_voting'
+
+  simple_voting.voting_open_access_check:
+    class: Drupal\simple_voting\Access\VotingOpenAccessCheck
+    arguments:
+      - '@simple_voting.manager'
+    tags:
+      - { name: access_check, applies_to: _simple_voting_voting_open }
