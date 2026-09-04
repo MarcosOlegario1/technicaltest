@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Runs the automated tests for the custom code in this project. Invoke it as
+  "vendor/bin/phpunit" inside the appserver container (lando exec appserver).
+  Functional tests need a reachable base URL; the value below matches the
+  default Lando setup.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="web/core/tests/bootstrap.php"
+         colors="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         failOnWarning="true"
+         cacheDirectory=".phpunit.cache"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd">
+  <php>
+    <ini name="error_reporting" value="32767"/>
+    <ini name="memory_limit" value="-1"/>
+    <env name="SIMPLETEST_DB" value="mysql://drupal11:drupal11@database/drupal11"/>
+    <env name="SIMPLETEST_BASE_URL" value="http://my-lando-app.lndo.site"/>
+    <env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/tmp"/>
+    <!-- Contributed modules in this install still trigger deprecations; only
+         our own code is under test here, so don't fail the run on them. -->
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+  </php>
+  <testsuites>
+    <testsuite name="simple_voting">
+      <directory>web/modules/custom/simple_voting/tests</directory>
+      <directory>web/modules/custom/simple_voting/modules/*/tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

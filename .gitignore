@@ -33,3 +33,7 @@ $RECYCLE.BIN/
 /.gitattributes
 # Local project brief, not part of the deliverable.
 /Teste de Sistema de Votação Simples*.pdf
+
+# PHPUnit
+/.phpunit.cache
+/.phpunit.result.cache

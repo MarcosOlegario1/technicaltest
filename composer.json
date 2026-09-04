@@ -116,7 +116,8 @@
             "drupal/site_template_helper": true,
             "php-http/discovery": true,
             "symfony/runtime": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
         },
         "bin-dir": "vendor/bin",
         "sort-packages": true,
@@ -167,6 +168,7 @@
         ]
     },
     "require-dev": {
-        "drupal/coder": "^8.3"
+        "drupal/coder": "^8.3",
+        "drupal/core-dev": "^11.3"
     }
 }
