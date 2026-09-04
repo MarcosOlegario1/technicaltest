@@ -1,0 +1,23 @@
+simple_voting.question.options:
+  path: '/admin/content/voting-question/{voting_question}/options'
+  defaults:
+    _controller: '\Drupal\simple_voting\Controller\QuestionOptionsController::list'
+    _title_callback: '\Drupal\simple_voting\Controller\QuestionOptionsController::title'
+  requirements:
+    _entity_access: 'voting_question.update'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'
+
+simple_voting.question.option_add:
+  path: '/admin/content/voting-question/{voting_question}/options/add'
+  defaults:
+    _entity_form: 'voting_option.add'
+    _title: 'Add answer option'
+  requirements:
+    _entity_create_access: 'voting_option'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'

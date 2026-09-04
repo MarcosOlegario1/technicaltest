@@ -8,6 +8,12 @@ entity.voting_question.edit_form:
   base_route: entity.voting_question.canonical
   title: 'Edit'
 
+simple_voting.question.options:
+  route_name: simple_voting.question.options
+  base_route: entity.voting_question.canonical
+  title: 'Options'
+  weight: 5
+
 entity.voting_question.delete_form:
   route_name: entity.voting_question.delete_form
   base_route: entity.voting_question.canonical

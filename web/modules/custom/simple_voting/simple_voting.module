@@ -8,6 +8,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\simple_voting\Entity\VotingQuestionInterface;
 
 /**
  * Implements hook_help().
@@ -17,4 +18,22 @@ function simple_voting_help(string $route_name, RouteMatchInterface $route_match
     return '<p>' . t('Lets an administrator define questions with answer options and lets people vote on them, either in the CMS or through the external API.') . '</p>';
   }
   return NULL;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for voting_question.
+ *
+ * Removes the answer options that belong to a question being deleted so no
+ * orphan rows are left behind.
+ */
+function simple_voting_voting_question_predelete(VotingQuestionInterface $question): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('voting_option');
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('question', $question->id())
+    ->execute();
+
+  if ($ids) {
+    $storage->delete($storage->loadMultiple($ids));
+  }
 }

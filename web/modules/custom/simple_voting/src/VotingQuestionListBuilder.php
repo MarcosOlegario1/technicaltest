@@ -6,6 +6,7 @@ namespace Drupal\simple_voting;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
+use Drupal\Core\Url;
 
 /**
  * Builds the admin list of voting questions.
@@ -33,6 +34,21 @@ class VotingQuestionListBuilder extends EntityListBuilder {
     $row['status'] = $entity->isPublished() ? $this->t('Yes') : $this->t('No');
     $row['show_results'] = $entity->showResults() ? $this->t('Yes') : $this->t('No');
     return $row + parent::buildRow($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOperations(EntityInterface $entity): array {
+    $operations = parent::getOperations($entity);
+    $operations['options'] = [
+      'title' => $this->t('Manage options'),
+      'weight' => 15,
+      'url' => Url::fromRoute('simple_voting.question.options', [
+        'voting_question' => $entity->id(),
+      ]),
+    ];
+    return $operations;
   }
 
 }
