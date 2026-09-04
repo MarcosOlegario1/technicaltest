@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\simple_voting\Kernel;
 
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\simple_voting\Entity\VotingQuestionInterface;
@@ -150,6 +151,27 @@ class VotingManagerTest extends KernelTestBase {
 
     $this->expectException(InvalidVoteException::class);
     $this->manager->recordVote($question, $other_options[0], $voter);
+  }
+
+  /**
+   * Two questions cannot share an identifier.
+   */
+  public function testDuplicateIdentifierIsRejected(): void {
+    $this->createQuestion('shared_id', ['One']);
+
+    $storage = $this->container->get('entity_type.manager')->getStorage('voting_question');
+    $duplicate = $storage->create([
+      'question' => 'Another one?',
+      'identifier' => 'shared_id',
+      'status' => TRUE,
+    ]);
+
+    // The entity constraint catches it on the admin form.
+    $this->assertCount(1, $duplicate->validate());
+
+    // The database unique key catches writes that skip validation.
+    $this->expectException(EntityStorageException::class);
+    $duplicate->save();
   }
 
   /**
