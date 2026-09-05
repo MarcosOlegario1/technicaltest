@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install and update routines for the simple voting system.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Replace the identifier index on voting_question with a unique key.
+ */
+function simple_voting_update_10001(): void {
+  $schema = \Drupal::database()->schema();
+  $table = 'voting_question';
+
+  if ($schema->indexExists($table, 'voting_question__identifier')) {
+    $schema->dropIndex($table, 'voting_question__identifier');
+  }
+  if (!$schema->indexExists($table, 'voting_question__identifier')) {
+    $schema->addUniqueKey($table, 'voting_question__identifier', ['identifier']);
+  }
+
+  // Keep the stored entity schema definition in sync.
+  $manager = \Drupal::entityDefinitionUpdateManager();
+  $manager->updateEntityType($manager->getEntityType('voting_question'));
+}

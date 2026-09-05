@@ -1,0 +1,65 @@
+simple_voting.overview:
+  path: '/voting'
+  defaults:
+    _controller: '\Drupal\simple_voting\Controller\VotingController::overview'
+    _title: 'Vote'
+  requirements:
+    _permission: 'vote in simple voting'
+    _simple_voting_voting_open: 'TRUE'
+
+simple_voting.question:
+  path: '/voting/{voting_question}'
+  defaults:
+    _controller: '\Drupal\simple_voting\Controller\VotingController::question'
+    _title_callback: '\Drupal\simple_voting\Controller\VotingController::questionTitle'
+  requirements:
+    _permission: 'vote in simple voting'
+    _simple_voting_voting_open: 'TRUE'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'
+
+simple_voting.admin_results:
+  path: '/admin/content/voting-question/{voting_question}/results'
+  defaults:
+    _controller: '\Drupal\simple_voting\Controller\VotingController::adminResults'
+    _title: 'Results'
+  requirements:
+    _custom_access: '\Drupal\simple_voting\Controller\VotingController::adminResultsAccess'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'
+
+simple_voting.settings:
+  path: '/admin/config/content/simple-voting'
+  defaults:
+    _form: '\Drupal\simple_voting\Form\SettingsForm'
+    _title: 'Simple voting'
+  requirements:
+    _permission: 'administer simple voting'
+
+simple_voting.question.options:
+  path: '/admin/content/voting-question/{voting_question}/options'
+  defaults:
+    _controller: '\Drupal\simple_voting\Controller\QuestionOptionsController::list'
+    _title_callback: '\Drupal\simple_voting\Controller\QuestionOptionsController::title'
+  requirements:
+    _entity_access: 'voting_question.update'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'
+
+simple_voting.question.option_add:
+  path: '/admin/content/voting-question/{voting_question}/options/add'
+  defaults:
+    _entity_form: 'voting_option.add'
+    _title: 'Add answer option'
+  requirements:
+    _entity_create_access: 'voting_option'
+  options:
+    parameters:
+      voting_question:
+        type: 'entity:voting_question'

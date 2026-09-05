@@ -1,0 +1,39 @@
+entity.voting_question.collection:
+  title: 'Voting questions'
+  route_name: entity.voting_question.collection
+  base_route: system.admin_content
+  weight: 20
+
+entity.vote.collection:
+  title: 'Votes'
+  route_name: entity.vote.collection
+  base_route: system.admin_content
+  weight: 21
+
+entity.voting_question.canonical:
+  route_name: entity.voting_question.canonical
+  base_route: entity.voting_question.canonical
+  title: 'View'
+
+entity.voting_question.edit_form:
+  route_name: entity.voting_question.edit_form
+  base_route: entity.voting_question.canonical
+  title: 'Edit'
+
+simple_voting.question.options:
+  route_name: simple_voting.question.options
+  base_route: entity.voting_question.canonical
+  title: 'Options'
+  weight: 5
+
+simple_voting.admin_results:
+  route_name: simple_voting.admin_results
+  base_route: entity.voting_question.canonical
+  title: 'Results'
+  weight: 7
+
+entity.voting_question.delete_form:
+  route_name: entity.voting_question.delete_form
+  base_route: entity.voting_question.canonical
+  title: 'Delete'
+  weight: 10

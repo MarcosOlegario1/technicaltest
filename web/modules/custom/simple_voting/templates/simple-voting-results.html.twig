@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Shows the vote tally for a question.
+ *
+ * Available variables:
+ * - question: the voting question entity.
+ * - results: array with 'total' and an 'options' list, each holding 'id',
+ *   'title', 'count' and 'percentage'.
+ * - user_choice: id of the option the current user picked, if any.
+ */
+#}
+<div class="simple-voting-results">
+  <h2>{{ question.label }}</h2>
+  <p>{{ 'Total votes: @count'|t({'@count': results.total}) }}</p>
+  <ul>
+    {% for option in results.options %}
+      <li>
+        <strong>{{ option.title }}</strong>: {{ option.count }} ({{ option.percentage }}%)
+        {%- if user_choice is not null and user_choice == option.id %} — {{ 'your vote'|t }}{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

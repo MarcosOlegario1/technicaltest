@@ -1,0 +1,8 @@
+name: Simple voting API
+type: module
+description: 'Hand-built REST endpoints that let an external application read questions and register votes.'
+package: Custom
+core_version_requirement: ^11
+dependencies:
+  - simple_voting:simple_voting
+  - drupal:basic_auth

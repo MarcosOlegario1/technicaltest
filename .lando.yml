@@ -7,3 +7,6 @@ config:
   composer_version: 2-latest
   drush: ^13
   webroot: web
+events:
+  post-start:
+    - appserver: sh scripts/lando_create_settings.sh

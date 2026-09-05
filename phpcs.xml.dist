@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="technicaltest">
+  <description>Coding standards for the custom code in this project.</description>
+
+  <file>web/modules/custom</file>
+
+  <arg name="extensions" value="php,module,inc,install,info.yml"/>
+  <arg name="colors"/>
+  <arg value="sp"/>
+
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+</ruleset>

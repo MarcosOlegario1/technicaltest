@@ -115,7 +115,9 @@
             "drupal/core-vendor-hardening": true,
             "drupal/site_template_helper": true,
             "php-http/discovery": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
         },
         "bin-dir": "vendor/bin",
         "sort-packages": true,
@@ -164,5 +166,9 @@
         "post-update-cmd": [
             "@php -r \"@unlink('vendor/bin/composer');\""
         ]
+    },
+    "require-dev": {
+        "drupal/coder": "^8.3",
+        "drupal/core-dev": "^11.3"
     }
 }

@@ -1,0 +1,92 @@
+{
+  "info": {
+    "name": "Simple voting API",
+    "description": "External endpoints for the simple_voting Drupal module. Set the collection variables, then run the requests top to bottom: \"Get question\" stores the first option id used by \"Register vote\".",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "{{username}}", "type": "string" },
+      { "key": "password", "value": "{{password}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://my-lando-app.lndo.site" },
+    { "key": "username", "value": "api_consumer" },
+    { "key": "password", "value": "api_consumer" },
+    { "key": "identifier", "value": "favorite_language" },
+    { "key": "option_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "List questions",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/api/voting/questions",
+          "host": ["{{base_url}}"],
+          "path": ["api", "voting", "questions"]
+        }
+      }
+    },
+    {
+      "name": "Get question",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();",
+              "if (body.data && body.data.options && body.data.options.length) {",
+              "  pm.collectionVariables.set('option_id', body.data.options[0].id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/api/voting/questions/{{identifier}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "voting", "questions", "{{identifier}}"]
+        }
+      }
+    },
+    {
+      "name": "Register vote",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"option\": {{option_id}}\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/voting/questions/{{identifier}}/vote",
+          "host": ["{{base_url}}"],
+          "path": ["api", "voting", "questions", "{{identifier}}", "vote"]
+        }
+      }
+    },
+    {
+      "name": "Get results",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": {
+          "raw": "{{base_url}}/api/voting/questions/{{identifier}}/results",
+          "host": ["{{base_url}}"],
+          "path": ["api", "voting", "questions", "{{identifier}}", "results"]
+        }
+      }
+    }
+  ]
+}

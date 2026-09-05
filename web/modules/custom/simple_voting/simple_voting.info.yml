@@ -1,0 +1,10 @@
+name: Simple voting
+type: module
+description: 'A simple voting system where people vote on questions defined by an administrator.'
+package: Custom
+core_version_requirement: ^11
+dependencies:
+  - drupal:field
+  - drupal:image
+  - drupal:options
+  - drupal:user

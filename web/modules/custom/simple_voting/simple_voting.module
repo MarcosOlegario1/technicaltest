@@ -1,0 +1,158 @@
+<?php
+
+/**
+ * @file
+ * Simple voting system.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\simple_voting\Entity\VotingOptionInterface;
+use Drupal\simple_voting\Entity\VotingQuestionInterface;
+
+/**
+ * Implements hook_help().
+ */
+function simple_voting_help(string $route_name, RouteMatchInterface $route_match): ?string {
+  if ($route_name === 'help.page.simple_voting') {
+    return '<p>' . t('Lets an administrator define questions with answer options and lets people vote on them, either in the CMS or through the external API.') . '</p>';
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function simple_voting_theme(): array {
+  return [
+    'simple_voting_results' => [
+      'variables' => [
+        'question' => NULL,
+        'results' => [],
+        'user_choice' => NULL,
+      ],
+    ],
+    'simple_voting_question_options' => [
+      'variables' => [
+        'question' => NULL,
+        'options' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for voting_question.
+ *
+ * The default view builder only has a display configured for the "question"
+ * field, so the canonical page otherwise shows nothing but the question
+ * text. This adds a read-only preview of the answer options (image, title
+ * and description), the same three things the PDF spec asks each option to
+ * carry.
+ */
+function simple_voting_voting_question_view(array &$build, VotingQuestionInterface $question, EntityViewDisplayInterface $display, string $view_mode): void {
+  if ($view_mode !== 'full' || $question->isNew()) {
+    return;
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('voting_option');
+  $ids = $storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('question', $question->id())
+    ->sort('weight')
+    ->sort('id')
+    ->execute();
+
+  $options = [];
+  foreach ($storage->loadMultiple($ids) as $option) {
+    /** @var \Drupal\simple_voting\Entity\VotingOptionInterface $option */
+    $options[] = [
+      'title' => $option->getTitle(),
+      'description' => $option->getDescription(),
+      'image' => $option->get('image')->isEmpty() ? NULL : $option->get('image')->view([
+        'type' => 'image',
+        'label' => 'hidden',
+        'settings' => ['image_style' => 'medium'],
+      ]),
+    ];
+  }
+
+  $build['simple_voting_options_preview'] = [
+    '#theme' => 'simple_voting_question_options',
+    '#question' => $question,
+    '#options' => $options,
+    '#weight' => 10,
+    '#cache' => [
+      'tags' => Cache::mergeTags($question->getCacheTags(), ['voting_option_list']),
+      'contexts' => ['user.permissions'],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ *
+ * Adds a top-level entry to the admin "Content" navigation, the same way
+ * core's Media and Blocks links are added (see
+ * \Drupal\navigation\NavigationContentLinks) and the way the Trash module
+ * adds its own entry. Without this, the voting admin UI only exists as bare
+ * routes with no entry point in the Content navigation.
+ */
+function simple_voting_menu_links_discovered_alter(array &$links): void {
+  if (\Drupal::moduleHandler()->moduleExists('navigation')) {
+    $links['navigation.voting_questions'] = [
+      'route_name' => 'entity.voting_question.collection',
+      'title' => t('Voting'),
+      'menu_name' => 'content',
+      'provider' => 'navigation',
+      'weight' => 50,
+    ];
+    $links['navigation.voting_questions.votes'] = [
+      'route_name' => 'entity.vote.collection',
+      'title' => t('Votes'),
+      'parent' => 'navigation.voting_questions',
+      'menu_name' => 'content',
+      'provider' => 'navigation',
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for voting_question.
+ *
+ * Removes the options and votes that belong to a question being deleted so no
+ * orphan rows are left behind.
+ */
+function simple_voting_voting_question_predelete(VotingQuestionInterface $question): void {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  foreach (['vote', 'voting_option'] as $entity_type_id) {
+    $storage = $entity_type_manager->getStorage($entity_type_id);
+    $ids = $storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('question', $question->id())
+      ->execute();
+    if ($ids) {
+      $storage->delete($storage->loadMultiple($ids));
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for voting_option.
+ *
+ * Removes the votes cast for an option being deleted.
+ */
+function simple_voting_voting_option_predelete(VotingOptionInterface $option): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('vote');
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('answer_option', $option->id())
+    ->execute();
+  if ($ids) {
+    $storage->delete($storage->loadMultiple($ids));
+  }
+}

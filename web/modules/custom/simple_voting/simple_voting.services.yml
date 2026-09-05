@@ -1,0 +1,29 @@
+services:
+  logger.channel.simple_voting:
+    parent: logger.channel_base
+    arguments:
+      - simple_voting
+
+  simple_voting.manager:
+    class: Drupal\simple_voting\VotingManager
+    arguments:
+      - '@config.factory'
+      - '@entity_type.manager'
+      - '@database'
+      - '@flood'
+      - '@cache.default'
+      - '@cache_tags.invalidator'
+      - '@logger.channel.simple_voting'
+
+  simple_voting.vote_widget_builder:
+    class: Drupal\simple_voting\VoteWidgetBuilder
+    arguments:
+      - '@simple_voting.manager'
+      - '@form_builder'
+
+  simple_voting.voting_open_access_check:
+    class: Drupal\simple_voting\Access\VotingOpenAccessCheck
+    arguments:
+      - '@simple_voting.manager'
+    tags:
+      - { name: access_check, applies_to: _simple_voting_voting_open }
