@@ -74,6 +74,25 @@ Full documentation, data model and API reference:
 - API base path: **/api/voting** (JSON, Basic auth). Postman collection at
   [`docs/postman/simple_voting.postman_collection.json`](docs/postman/simple_voting.postman_collection.json).
 
+## Load-testing the API
+
+`scripts/load_test_api.php` fires a large batch of real, concurrent HTTP
+votes at the running API — throwaway questions and users, a live progress
+line, and a final check that the database has exactly one row per successful
+vote and no duplicate `(question, voter)` pair. Defaults to 500 users × 40
+questions (20,000 unique votes) plus a 5% batch of deliberate concurrent
+duplicates:
+
+```bash
+lando drush php:script scripts/load_test_api.php
+
+# a quicker 1,000-vote smoke run
+LOAD_TEST_USERS=100 LOAD_TEST_QUESTIONS=10 \
+  lando drush php:script scripts/load_test_api.php
+```
+
+See the file's header comment for every environment variable it reads.
+
 ## Useful commands
 
 ```bash
