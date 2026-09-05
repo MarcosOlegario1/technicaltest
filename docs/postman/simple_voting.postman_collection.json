@@ -13,8 +13,8 @@
   },
   "variable": [
     { "key": "base_url", "value": "https://my-lando-app.lndo.site" },
-    { "key": "username", "value": "voter" },
-    { "key": "password", "value": "voter" },
+    { "key": "username", "value": "api_consumer" },
+    { "key": "password", "value": "api_consumer" },
     { "key": "identifier", "value": "favorite_language" },
     { "key": "option_id", "value": "" }
   ],

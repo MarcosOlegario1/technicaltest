@@ -119,10 +119,10 @@ Error codes: `authentication_required` (403), `question_not_found` (404),
 ### Example
 
 ```bash
-curl -u voter:voter -H 'Accept: application/json' \
+curl -u api_consumer:api_consumer -H 'Accept: application/json' \
   https://my-lando-app.lndo.site/api/voting/questions
 
-curl -u voter:voter -H 'Accept: application/json' -H 'Content-Type: application/json' \
+curl -u api_consumer:api_consumer -H 'Accept: application/json' -H 'Content-Type: application/json' \
   -X POST https://my-lando-app.lndo.site/api/voting/questions/favorite_language/vote \
   -d '{"option": 1}'
 ```
