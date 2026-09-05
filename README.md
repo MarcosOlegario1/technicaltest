@@ -18,6 +18,8 @@ Clone the repository and, from within the project folder:
 
 ```bash
 # 1. start the containers (this takes a while the first time as it downloads images)
+#    this also creates web/sites/default/settings.php on first run, pointed at
+#    Lando's own database — see scripts/lando_create_settings.sh
 lando start
 
 # 2. install PHP dependencies
