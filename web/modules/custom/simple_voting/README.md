@@ -93,6 +93,13 @@ concurrent races, rate limiting, and storage failures.
   tally when `show_results` is on, or just a confirmation when it is off.
   Administrators (or holders of *access simple voting results*) always see the
   tally.
+- **Voting question** block (`Drupal\simple_voting\Plugin\Block\VotingQuestionBlock`)
+  – embeds one question, with the same vote-or-results behaviour, on any page.
+  Place it through *Structure → Block layout*, or render it from a Twig
+  template with `{{ drupal_block('simple_voting_question:' ~ block_id) }}`.
+  Both surfaces share the exact same logic through the
+  `simple_voting.vote_widget_builder` service, so a question behaves
+  identically whether it is opened at `/voting/{id}` or dropped into a block.
 
 ## External API
 

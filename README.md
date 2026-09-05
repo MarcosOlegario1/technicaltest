@@ -68,7 +68,7 @@ Full documentation, data model and API reference:
 - Admin: the **Voting** icon in the admin Content navigation, and
   **Configuration → Content authoring → Simple voting** for the global on/off
   switch.
-- CMS voting: **/voting**.
+- CMS voting: **/voting**, or the **Voting question** block on any page.
 - API base path: **/api/voting** (JSON, Basic auth). Postman collection at
   [`docs/postman/simple_voting.postman_collection.json`](docs/postman/simple_voting.postman_collection.json).
 

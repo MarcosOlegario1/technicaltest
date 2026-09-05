@@ -15,6 +15,12 @@ services:
       - '@cache_tags.invalidator'
       - '@logger.channel.simple_voting'
 
+  simple_voting.vote_widget_builder:
+    class: Drupal\simple_voting\VoteWidgetBuilder
+    arguments:
+      - '@simple_voting.manager'
+      - '@form_builder'
+
   simple_voting.voting_open_access_check:
     class: Drupal\simple_voting\Access\VotingOpenAccessCheck
     arguments:
