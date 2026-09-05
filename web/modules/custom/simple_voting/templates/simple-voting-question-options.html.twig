@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Read-only preview of a question's answer options.
+ *
+ * Available variables:
+ * - question: the voting question entity.
+ * - options: list of options, each with 'title', 'description' (a string,
+ *   may be empty) and 'image' (a rendered image, or null).
+ */
+#}
+<div class="simple-voting-question-options">
+  <h2>{{ 'Answer options'|t }}</h2>
+  {% if options is empty %}
+    <p>{{ 'This question has no answer options yet.'|t }}</p>
+  {% else %}
+    <ul class="simple-voting-question-options__list">
+      {% for option in options %}
+        <li class="simple-voting-question-options__item">
+          {% if option.image %}
+            <div class="simple-voting-question-options__image">{{ option.image }}</div>
+          {% endif %}
+          <strong>{{ option.title }}</strong>
+          {% if option.description %}
+            <p>{{ option.description }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>

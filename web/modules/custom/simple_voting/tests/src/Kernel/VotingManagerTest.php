@@ -6,6 +6,7 @@ namespace Drupal\Tests\simple_voting\Kernel;
 
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\simple_voting\Traits\VotingTestEntitiesTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use Drupal\simple_voting\Entity\VotingQuestionInterface;
 use Drupal\simple_voting\Exception\DuplicateVoteException;
@@ -25,6 +26,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 class VotingManagerTest extends KernelTestBase {
 
   use UserCreationTrait;
+  use VotingTestEntitiesTrait;
 
   /**
    * {@inheritdoc}
@@ -188,44 +190,6 @@ class VotingManagerTest extends KernelTestBase {
 
     $question->setUnpublished()->save();
     $this->assertFalse($this->manager->checkVotingAccess($question, $with_permission)->isAllowed());
-  }
-
-  /**
-   * Creates a published question with the given option titles.
-   *
-   * @param string $identifier
-   *   The question identifier.
-   * @param string[] $option_titles
-   *   The option titles to create.
-   *
-   * @return array
-   *   A tuple of [question, options[]].
-   */
-  private function createQuestion(string $identifier, array $option_titles): array {
-    $question_storage = $this->container->get('entity_type.manager')->getStorage('voting_question');
-    $option_storage = $this->container->get('entity_type.manager')->getStorage('voting_option');
-
-    $question = $question_storage->create([
-      'question' => ucfirst($identifier) . '?',
-      'identifier' => $identifier,
-      'status' => TRUE,
-      'show_results' => TRUE,
-    ]);
-    $question->save();
-
-    $options = [];
-    $weight = 0;
-    foreach ($option_titles as $title) {
-      $option = $option_storage->create([
-        'question' => $question->id(),
-        'title' => $title,
-        'weight' => $weight++,
-      ]);
-      $option->save();
-      $options[] = $option;
-    }
-
-    return [$question, $options];
   }
 
 }

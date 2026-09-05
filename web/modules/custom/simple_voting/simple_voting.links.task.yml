@@ -1,3 +1,15 @@
+entity.voting_question.collection:
+  title: 'Voting questions'
+  route_name: entity.voting_question.collection
+  base_route: system.admin_content
+  weight: 20
+
+entity.vote.collection:
+  title: 'Votes'
+  route_name: entity.vote.collection
+  base_route: system.admin_content
+  weight: 21
+
 entity.voting_question.canonical:
   route_name: entity.voting_question.canonical
   base_route: entity.voting_question.canonical

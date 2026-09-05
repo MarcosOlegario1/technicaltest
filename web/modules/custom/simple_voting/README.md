@@ -73,11 +73,14 @@ concurrent races, rate limiting, and storage failures.
 
 ## Admin interface
 
-- **Content → Voting questions** (`/admin/content/voting-question`) – list, add,
-  edit, delete. Each question has an **Options** tab to manage its answers and a
-  **Results** tab with the live tally.
-- **Content → Votes** (`/admin/content/vote`) – a read‑only audit list; votes
-  can be removed here for moderation.
+- A **Voting** entry in the admin Content navigation (the sidebar icon next to
+  Content, Media and Trash) opens **Voting questions**
+  (`/admin/content/voting-question`) – list, add, edit, delete. Each question
+  has an **Options** tab to manage its answers and a **Results** tab with the
+  live tally. The question's own **View** page previews every option with its
+  image, title and description, the same three things an option can carry.
+  The Voting entry's flyout also links to **Votes** (`/admin/content/vote`), a
+  read‑only audit list; votes can be removed there for moderation.
 - **Configuration → Content authoring → Simple voting**
   (`/admin/config/content/simple-voting`) – the single **Enable voting**
   checkbox. When off, every voting route and every API endpoint returns 403,

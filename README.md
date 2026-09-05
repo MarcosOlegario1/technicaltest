@@ -65,8 +65,9 @@ lando drush php:script scripts/seed_demo_content.php
 Full documentation, data model and API reference:
 [`web/modules/custom/simple_voting/README.md`](web/modules/custom/simple_voting/README.md).
 
-- Admin: **Content → Voting questions**, and **Configuration → Content authoring
-  → Simple voting** for the global on/off switch.
+- Admin: the **Voting** icon in the admin Content navigation, and
+  **Configuration → Content authoring → Simple voting** for the global on/off
+  switch.
 - CMS voting: **/voting**.
 - API base path: **/api/voting** (JSON, Basic auth). Postman collection at
   [`docs/postman/simple_voting.postman_collection.json`](docs/postman/simple_voting.postman_collection.json).
