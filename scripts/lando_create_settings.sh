@@ -23,21 +23,29 @@ echo "No $SETTINGS yet — creating one for the Lando database service."
 cp web/sites/default/default.settings.php "$SETTINGS"
 chmod u+w "$SETTINGS"
 
-cat >> "$SETTINGS" <<'PHP'
+# Generate the salt once, here, and bake it in as a literal. Calling
+# bin2hex(random_bytes(32)) directly in settings.php would re-run on every
+# request, handing Drupal a new hash_salt each time — which invalidates
+# sessions and CSRF tokens immediately and makes aggregated CSS/JS filenames
+# change on every request, so the browser chases a moving target and loops
+# forever on 301s ("too many redirects").
+HASH_SALT=$(php -r "echo bin2hex(random_bytes(32));")
+
+cat >> "$SETTINGS" <<PHP
 
 // Added by scripts/lando_create_settings.sh: Lando's own drupal11 recipe
 // database, fixed and non-secret (local Docker network only).
-$databases['default']['default'] = [
+\$databases['default']['default'] = [
   'database' => 'drupal11',
   'username' => 'drupal11',
   'password' => 'drupal11',
   'host' => 'database',
   'port' => '3306',
   'driver' => 'mysql',
-  'namespace' => 'Drupal\\mysql\\Driver\\Database\\mysql',
+  'namespace' => 'Drupal\\\\mysql\\\\Driver\\\\Database\\\\mysql',
   'autoload' => 'core/modules/mysql/src/Driver/Database/mysql/',
 ];
-$settings['hash_salt'] = bin2hex(random_bytes(32));
+\$settings['hash_salt'] = '$HASH_SALT';
 PHP
 
 echo "Created $SETTINGS."
